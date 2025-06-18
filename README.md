@@ -1,2 +1,2 @@
 # api
-this is sdk base lemode, provide CRUD Data Service interface.
+this is sdk base lemodo, provide CRUD Data Service interface.
