@@ -395,6 +395,14 @@ public class MapTool extends CruderConstant {
 	}
 	return values.toString();
     }
+    
+    public static String string(Map<String, Object> mapData, String key,String de) {
+	String string = string(mapData,key);
+	if(string==null) {
+	    return de;
+	}
+	return string;
+    }
 
     public static String string(Map<String, Object> mapData, String key) {
 	if (mapData == null || key == null) {
@@ -457,6 +465,13 @@ public class MapTool extends CruderConstant {
 	return string.toUpperCase();
     }
 
+    public static Boolean bool(Map<String, Object> mapData, String key,Boolean de) {
+	String string = string(mapData, key);
+	if (string == null || "".equals(string.trim())) {
+	    return de;
+	}
+	return Boolean.valueOf(string);
+    }
     public static Boolean bool(Map<String, Object> mapData, String key) {
 	String string = string(mapData, key);
 	if (string == null || "".equals(string.trim())) {
@@ -761,6 +776,10 @@ public class MapTool extends CruderConstant {
     public static List<String> listStr(Map<String, Object> mapData, String key) {
 
 	return (List<String>) mapData.get(key);
+    }
+    
+    public static List<String> stringList(Map<String, Object> mapData, String key) {
+	return splitValue2List(mapData,  key);
     }
 
     public static List<String> splitValue2List(Map<String, Object> mapData, String key) {
@@ -1546,6 +1565,15 @@ public class MapTool extends CruderConstant {
 	}
 	return null;
     }
+    
+    public static Long longDValue(Map<String, Object> mapData, String key,Long de) {
+	Long longValue = longValue(mapData,key);
+	if(longValue==null&&de!=null) {
+	    return de;
+	}
+	
+	return longValue;
+    }
 
     public static Long longValue(Map<String, Object> mapData, String key) {
 	String string = string(mapData, key);
@@ -1588,6 +1616,34 @@ public class MapTool extends CruderConstant {
 	    los[i] = Integer.valueOf(strs[i]);
 	}
 	return los;
+    }
+    
+    public static BigDecimal decimal(Map<String, Object> mapData, String key) {
+	return bigDecimal(mapData,key);
+    }
+    public static BigDecimal decimal(Map<String, Object> mapData, String key,BigDecimal de) {
+	String string = string(mapData,key);
+	if(string==null||string.trim().length()<1) {
+	    return de;
+	}
+	return bigDecimal(mapData,key);
+    }
+    
+    public static LocalDateTime localDateTime(Map<String, Object> mapData, String key,LocalDateTime de){
+	String string = string(mapData,key);
+	if(string==null||string.trim().length()<1) {
+	    return de;
+	}
+	 
+	return localDateTime(mapData,key);
+    }
+    public static LocalDateTime localDateTime(Map<String, Object> mapData, String key){
+	String string = string(mapData,key);
+	if(string==null||string.trim().length()<1) {
+	    return null;
+	}
+	LocalDateTime localDateTime = LocalDateTime.parse(string);
+	return localDateTime;
     }
 
     public static BigDecimal bigDecimal(Map<String, Object> mapData, String key) {
@@ -1762,6 +1818,19 @@ public class MapTool extends CruderConstant {
 	    xx.put(columns[i], dbColumns[i]);
 	}
 	return xx;
+    }
+    
+    public void formateTime(Map<String, Object> source, Map<String, Object> target, String key) {
+        String string = MapTool.string(source, key);
+        if (string == null) return;
+        
+        if (string.contains("T")) {
+            target.put(key, DateUtil.parseDate(string).getTime());
+        } else if (string.contains(":")) {
+            target.put(key, DateUtil.parseDate(string).getTime());
+        } else {
+            target.put(key, Long.valueOf(string));
+        }
     }
 
 }

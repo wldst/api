@@ -67,6 +67,14 @@ public class Result<T> {
 	return new Result<T>(ResultCode.SUCCESS.getCode(), message, data);
     }
     
+    public static <T> Result<T> ok() {
+        return new Result<T>(ResultCode.SUCCESS.getCode(), "success", null);
+    }
+
+    public static <T> Result<T> ok(T data) {
+        return new Result<T>(ResultCode.SUCCESS.getCode(), "success", data);
+    }
+    
     
 
     /**

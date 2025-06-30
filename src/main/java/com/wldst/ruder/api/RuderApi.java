@@ -35,6 +35,15 @@ public class RuderApi extends SystemDomain {
     public static Map<String, Object> saveObject(String label, Map<String, Object> map) {
 	return postRequest(ruderContext+"/cruder/" + label + "/save", map);
     }
+    
+    public static Long save( String label,Map<String, Object> map) {
+	return save(map,label);
+    }
+    
+    public static boolean isExists(String label,String key,String value){
+	Map<String, Object> attMapBy = getAttMapBy(key, value, label);
+	return attMapBy==null||attMapBy.isEmpty();
+    }
 
     public static Long save(Map<String, Object> map, String label) {
 	String postRequest2 = postRequest2(ruderContext+"/cruder/" + label + "/save", map);
@@ -83,6 +92,12 @@ public class RuderApi extends SystemDomain {
    	    return null;
    	}
 	return dataList(queryData);
+    }
+    
+    public static List<Map<String, Object>> getList(String label,String key,String value){
+	Map<String, Object> map = newMap();
+	map.put(key,value);
+	return queryList(map,label);
     }
     public static List<Map<String, Object>> queryList(Map<String, Object> map, String label) {
    	return dataList(query(map,ruderContext+"/cruder/"+label+"/query"));
@@ -383,6 +398,15 @@ public class RuderApi extends SystemDomain {
     }
 
     public static Map<String, Object> getAttMapBy(String key, String value, String label) {
+	Map<String, Object> newMap = newMap();
+	newMap.put("key", key);
+	newMap.put("value", value);
+	newMap.put("label", label);
+	Object postRequest = postRequest(ruderContext+"/metadata/getAttMapBy", newMap);
+	Map<String, Object> data = (Map<String, Object>) postRequest;
+	return data;
+    }
+    public static Map<String, Object> getBy(String key, Object value, String label) {
 	Map<String, Object> newMap = newMap();
 	newMap.put("key", key);
 	newMap.put("value", value);
