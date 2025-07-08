@@ -3,6 +3,7 @@ package com.wldst.ruder.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -1148,21 +1149,27 @@ public class MapTool extends CruderConstant {
 			    String typeName = type2.getName();
 			    
 			    // 根据字段类型进行转换
+			    String strValue = String.valueOf(value);
 			    if (typeName.equals("int") || typeName.equals("java.lang.Integer")) {
-				field.set(userOTP, Integer.parseInt(String.valueOf(value)));
+				field.set(userOTP, Integer.parseInt(strValue));
 			    } else if (typeName.equals("long") || typeName.equals("java.lang.Long")) {
-				field.set(userOTP, Long.parseLong(String.valueOf(value)));
+				field.set(userOTP, Long.parseLong(strValue));
 			    } else if (typeName.equals("double") || typeName.equals("java.lang.Double")) {
-				field.set(userOTP, Double.parseDouble(String.valueOf(value)));
+				field.set(userOTP, Double.parseDouble(strValue));
 			    } else if (typeName.equals("boolean") || typeName.equals("java.lang.Boolean")) {
-				field.set(userOTP, Boolean.parseBoolean(String.valueOf(value)));
+				field.set(userOTP, Boolean.parseBoolean(strValue));
 			    } else if (typeName.equals("java.lang.String")) {
-				field.set(userOTP, String.valueOf(value));
+				field.set(userOTP, strValue);
 			    } else if(typeName.toLowerCase().contains("list")) {
 				field.set(userOTP, list(map, fieldName));
 			    }
 			    else if(typeName.equals("java.time.LocalDateTime")) {
-				field.set(userOTP, LocalDateTime.parse(String.valueOf(value)));
+				field.set(userOTP, LocalDateTime.parse(strValue));
+			    }else if (typeName.equals("BigDecimal") || typeName.equals("java.math.BigDecimal")) {
+				field.set(userOTP, new BigDecimal(strValue));
+			    }
+			    else if (typeName.equals("BigInteger") || typeName.equals("java.math.BigInteger")) {
+				field.set(userOTP, BigInteger.valueOf(Long.parseLong(strValue)));
 			    }
 			    
 			    else {
